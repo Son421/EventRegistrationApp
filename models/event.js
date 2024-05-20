@@ -6,7 +6,7 @@ var eventSchema = new mongoose.Schema({
     title: String,
     description: String,
     eventDate: Date,
-    organize: String,
+    organizator: String,
     participants: [participantSchema] 
 });
 

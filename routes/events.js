@@ -47,8 +47,18 @@ router.get('/participants-list/:eventID', (req, res, next) => {
 
 router.get('/search', (req, res, next) => {
     var eventModel = require('../models/event');
-    
-    res.send(JSON.stringify({}));
+
+    let eventsList = eventModel.find({});
+
+    if(req.query['sort']) {
+        var sortingAttribute = req.query['sort'].split('-')[0];
+        var sortingDirection = req.query['sort'].split('-')[1];
+        var query = {};
+        query[sortingAttribute] = sortingDirection
+        eventsList.sort(query);
+    }
+
+    eventsList.exec().then(eventList => res.send(eventList));
 });
 
 module.exports = router;
