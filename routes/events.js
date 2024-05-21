@@ -10,11 +10,7 @@ router.post('/register/:eventID', async (req, res, next) => {
     if (event) {
 
         try {
-            event.participants.push({
-                email: "test2@mail.com",
-                dateOfBirth: new Date(),
-                informator: 111111
-            });
+            event.participants.push(req.body);
         } catch (e) {
             return res.send({
                 error: true,
