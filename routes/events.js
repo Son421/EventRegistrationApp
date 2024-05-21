@@ -61,4 +61,28 @@ router.get('/search', (req, res, next) => {
     eventsList.exec().then(eventList => res.send(eventList));
 });
 
+router.get('/search-participant/:eventID', async (req, res, next) => {
+    var eventModel = require('../models/event');
+
+    var searchField = Object.keys(req.query)[0];
+    var searchValue = req.query[searchField];
+
+    var query = {};
+    query[searchField] = searchValue;
+
+    var event = await eventModel.findOne({_id: req.params.eventID}, {
+        "participants": { $elemMatch: query},
+        
+    }).exec();
+    
+    if (event) {
+        return res.send(event.participants[0]);
+    }
+    
+    return res.send({
+        error: true,    
+        message: `No customer with such ${req.query}`
+    })
+});
+
 module.exports = router;
